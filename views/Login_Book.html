@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Login Form</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" type="text/css" href="./css/style.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+<script type="text/javascript">
+function OnSubmitForm(value)
+
+{
+
+  if(value == 'Login')
+
+  {
+
+                 
+
+  document.myform.action ="http://localhost:3000/login";
+
+  document.myform.submit();
+
+  }
+
+
+
+
+}
+</script>
+
+
+</head>
+
+<body>
+  <div class="login">
+  <h1>Pisa De </h1>
+  <span style="color:white; height=30px;margin-left:120px;"><strong>Login<strong></span>
+  <br></br>
+  
+ 
+    <form method="post" name="myform">
+    	<input type="text" name="username" placeholder="Username" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit" onclick="OnSubmitForm(this.value);" class="btn btn-primary btn-block btn-large" value="Login">Login</button>
+		<a href="Signup_Book.html"<button type="submit" class="btn btn-primary btn-block btn-large">Register</button></a>
+    </form>
+</div>
+  
+    <script src="js/index.js"></script>
+
+</body>
+</html>
