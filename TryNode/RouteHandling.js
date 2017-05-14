@@ -1,19 +1,8 @@
-
-/**
- * Module dependencies.
- */
-var routing = require('./RouteHandling');
-var user = require('./routes/user');
-
-var  http = require('http');
-
-
-
-
 var express = require('express');
 var app = express();
 var session = require('express-session');
 var routes = require('./routes');
+var user = require('./routes/user');
 
 
 var path = require('path')
@@ -105,10 +94,6 @@ app.get('/',function(req,res){
 	}
 	});
 
-
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});
 
 
 
