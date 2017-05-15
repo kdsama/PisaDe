@@ -12,16 +12,27 @@ var  http = require('http');
 
 var express = require('express');
 var app = express();
+
+
 var session = require('express-session');
 var routes = require('./routes');
-
+var bcrypt = require('bcrypt')
 
 var path = require('path')
   , bodyParser = require('body-parser')
   ,logger = require('morgan')
    ,mySqlStore = require('express-mysql-session')(session)
-   , favicon = require('serve-favicon');
+   , favicon = require('serve-favicon')
+   ,nodemailer =require('nodemailer');
 
+var smtpTransport = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    auth: {
+        user: "kdsama5593@gmail.com",
+        pass: "lycandhingra"
+    }
+});
 app.use(logger('dev'));
 
 
@@ -54,7 +65,7 @@ var mysql =  require('mysql');
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-
+app.set('x-powered-by', false);
 var client =mysql.createConnection({
 	host:"localhost",
 	user:"root",
@@ -159,9 +170,12 @@ var signup = require('./routes/signup');
 app.get('/signup', signup.signup);
 console.log("GOT SIGNUP IN ");
 app.post('/signup',function(req,res){
-	console.log('Entered');
+	console.log('Sign Up :- Entered');
 	var username = req.body.username;
 	var password = req.body.password;
+	var name = req.body.name;
+	var email = req.body.email;
+	var strQueryInsert1 = "insert into user(email,username,name) values('"+email+"','"+username+"','"+name+"');";
 	var cipher = crypto.createCipher(algorithm,pwd);
 		 var crypted = cipher.update(password,'utf8','hex');
 		 crypted += cipher.final('hex');      
@@ -172,8 +186,33 @@ app.post('/signup',function(req,res){
 		 	}
 		 	else
 		 		{
-		 	      console.log(rows);
-			  res.redirect('/');
+		 	   console.log(rows);
+		 	      client.query(strQueryInsert1,function(err,rows){
+		 	    	  if (err){
+		 	    		  return 0;
+		 	    	  }
+		 	    	  else{
+		 	    		  console.log('Successfuly registered' +name);
+		 	    		  
+		 	    		 var mailOptions={
+		 	    				   to : email,
+		 	    				   subject : "Thanks for making account",
+		 	    				   text : "Hey"+name+", Thanks for Joining Pisa De.I am hopeful that you will make me lots of money"
+		 	    				};
+		 	    				console.log(mailOptions);
+		 	    				smtpTransport.sendMail(mailOptions, function(err, res){
+		 	    				if(err){
+		 	    				console.log(err);
+		 	    				res.end("err");
+		 	    				}else{
+		 	    				console.log("Message sent: " + res.message);
+		 	    				res.end("sent");
+		 	    				}
+		 	    				});
+		 	    		 res.redirect('/');
+		 	    	  }
+		 	      });
+			  
 		 		}
 		 });		
 	
@@ -208,6 +247,8 @@ client.query(strQuery,function(err,rows){
 	}
 	else{
 		sess.username = username;
+		
+		
 		res.render('welcome',{user:username});
 	}
 });

@@ -17,6 +17,9 @@
     "mysql": "^5.7.18",
     "serve-favicon": "^2.4.2",
     "cookie-parser":"^1.4.2",
-    "express-mysql-session":"*"
+    "express-mysql-session":"*",
+    "nodemailer": "latest",
+    "bcrypt":"latest",
+    "nodemon":"latest"
       }
 }
