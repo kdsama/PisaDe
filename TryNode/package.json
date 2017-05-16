@@ -20,6 +20,9 @@
     "express-mysql-session":"*",
     "nodemailer": "latest",
     "bcrypt":"latest",
-    "nodemon":"latest"
+    "nodemon":"latest",
+    "bcrypt-nodejs":"latest",
+    "connect-timeout":"latest"
+    
       }
 }
