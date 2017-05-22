@@ -18,21 +18,16 @@
 /**
  * Module dependencies.
  */
-var routing = require('./RouteHandling');
-var user = require('./routes/user');
 
 var  http = require('http');
 
 
-
-
 var express = require('express');
 var app = express();
-
 var timeout = require('connect-timeout');
 var session = require('express-session');
 var routes = require('./routes');
-var bcrypt = require('bcrypt')
+var bcrypt = require('bcrypt');
 
 var path = require('path')
   , bodyParser = require('body-parser')
@@ -41,14 +36,14 @@ var path = require('path')
    , favicon = require('serve-favicon')
    ,nodemailer =require('nodemailer');
 
-var smtpTransport = nodemailer.createTransport({
-    service: "gmail",
-    host: "smtp.gmail.com",
-    auth: {
-        user: "kdsama5593@gmail.com",
-        pass: "lycandhingra"
-    }
-});
+//var smtpTransport = nodemailer.createTransport({
+//    service: "gmail",
+//    host: "smtp.gmail.com",
+//    auth: {
+//        user: "kdsama5593@gmail.com",
+//        pass: "lycandhingra"
+//    }
+//});
 app.use(logger('dev'));
 
 
@@ -82,11 +77,6 @@ app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.set('x-powered-by', false);
-var client =mysql.createConnection({
-	host:"localhost",
-	user:"root",
-	password:"password"
-});
 
 
 
@@ -118,52 +108,21 @@ app.use(timeout('600s'));
 var sess;
 
 
-app.get('/',function(req,res){
-	sess = req.session;
-	//Session set when user Request our app via URL
-	if(sess.username) {
-	/*
-	* This line check Session existence.
-	* If it existed will do some action.
-	*/
-		res.render('welcome',{user:sess.username});
-	}
-	else {
-	    res.render('login');
-	}
-	});
-
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+	  console.log('Express server listening on port ' + app.get('port'));
+	});
+
+var client = '.router/database/db';
+
+var router = require('./routes')(app);
+
+//Error Handling
+app.use(function(err, req, res, next) {
+ res.status(err.status || 500);
 });
 
-
-
-var logout = require('./routes/logout')
-app.get('/logout',logout.logout);
-app.post('/logout',function (req,res){
-	console.log('Entered');
-	req.session.destroy(function(err) {
-		  if(err) {
-		    console.log(err);
-		  } else {
-		    res.render('logout');
-		  }
-		});
-});
-
-
-client.connect();
-console.log("database connected");
-client.query("use details",function(err){
-	if(err){
-		console.log("not present");
-	}
-	else{
-		console.log("present");
-	}
-});
+module.exports = app;
 
 
 
@@ -174,95 +133,46 @@ client.query("use details",function(err){
 
 
 
+//app.get('/logout',logout.logout);
 
-
+//
+//
+//client.connect();
+//console.log("database connected");
+//client.query("use details",function(err){
+//	if(err){
+//		console.log("not present");
+//	}
+//	else{
+//		console.log("present");
+//	}
+//});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //SIGN UP 
 
-var signup = require('./routes/signup');
-app.get('/signup', signup.signup);
 
-app.post('/signup',function(req,res){
-	console.log('Sign Up :- Entered');
-	var username = req.body.username;
-	var password = req.body.password;
-	var name = req.body.name;
-	var email = req.body.email;
-	
-	console.log('Entering hashing salting state');
-	bcrypt.genSalt(10, function(err, salt) {
-	  if (err) console.log('Error in Generating salt'); //handle error
-	  console.log('Generating Salt');
-	  bcrypt.hash(password, salt, function(err, hash) {
-		  console.log('Generating Salt completed');
-	    if (err) console.log('Error in Hashing the password'); //handle error
 
-	    var strQueryInsert1 = "insert into user(email,username,name) values('"+email+"','"+username+"','"+name+"');";
-		console.log('hash function implementing');
-		 var strQueryInsert = "insert into userdetails(username,password) values('"+username+"','"+hash+"');";
-	
-		 
-		 client.query(strQueryInsert,function(err,rows){
-		 	if(err){
-		 		return 0;
-		 	}
-		 	else
-		 		{
-		 	   console.log(rows);
-		 	      client.query(strQueryInsert1,function(err,rows){
-		 	    	  if (err){
-		 	    		  return 0;
-		 	    	  }
-		 	    	  else{
-		 	    		  console.log('Successfuly registered' +name);
-		 	    	  }
-
-	  });
-
-		 	    		 
-		 	    	  }
-		 	
-		 	      });
-			  
-
-		 });		
-	
-	
-	
-	
-});
-
-});
 //SIGNUP DONE
 
 //LOGIN
-var login = require('./routes/login');
-app.get('/login', login.login);
+//var login = require('./routes/login');
+//app.get('/login', login.login);
 
-app.post('/login', function(req, res){
-var username = req.body.username;
-var password = req.body.password;
-sess = req.session;
 
-var cipher = crypto.createCipher(algorithm,pwd);
-var crypted = cipher.update(password,'utf8','hex');
-	crypted += cipher.final('hex');      
-
-var strQuery = "select * from userdetails where username ='"+username+"'and password='"+crypted+"';";
-client.query(strQuery,function(err,rows){
-	console.log(rows);
-if(rows.length==0){
-		console.log("invalid length");
-		return 0;
-	}
-	else{
-		sess.username = username;
-		res.render('welcome',{user:username});
-	}
-});   
-});
-//LOGIN DONE
-
-//LOGGED IN 
-
-var welcome = require('./routes/welcome');
-app.get('/welcome', welcome.welcome);
+//
+////LOGGED IN 
+//
+//var welcome = require('./routes/welcome');
+//
+//app.get('/welcome', welcome.welcome);
