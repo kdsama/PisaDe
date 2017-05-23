@@ -12,6 +12,7 @@ router.post('/', function (req, res) {
 
 router.get('/',function(req,res){
 	var sess = req.session;
+	console.log('session at welcome page = '+ sess.username);
 	//Session set when user Request our app via URL
 	if(sess.username) {
 	/*

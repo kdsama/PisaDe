@@ -6,14 +6,7 @@ router.get('/',function(req,res){
 });
 
 router.post('/',function(req,res){
-	console.log('Entered');
-	req.session.destroy(function(err) {
-		  if(err) {
-		    console.log(err);
-		  } else {
-		    res.render('logout');
-		  }
-		});
+	
 });
 
 module.exports = router;
