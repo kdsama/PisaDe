@@ -1,23 +1,4 @@
-/*		 	    		 var mailOptions={
-		 	    				   to : email,
-		 	    				   subject : "Thanks for making account",
-		 	    				   text : "Hey"+name+", Thanks for Joining Pisa De.I am hopeful that you will make me lots of money"
-		 	    				};
-		 	    				console.log(mailOptions);
-		 	    				smtpTransport.sendMail(mailOptions, function(err, res){
-		 	    				if(err){
-		 	    				console.log(err);
-		 	    				res.end(err);
-		 	    				}else{
-		 	    				console.log("Message sent: " + res.message);
-		 	    				res.end("sent");
-		 	    				}
-		 	    				});
-		 	    				
-		 	    				*/
-/**
- * Module dependencies.
- */
+
 
 var  http = require('http');
 
@@ -36,14 +17,7 @@ var path = require('path')
    , favicon = require('serve-favicon')
    ,nodemailer =require('nodemailer');
 
-//var smtpTransport = nodemailer.createTransport({
-//    service: "gmail",
-//    host: "smtp.gmail.com",
-//    auth: {
-//        user: "kdsama5593@gmail.com",
-//        pass: "lycandhingra"
-//    }
-//});
+
 app.use(logger('dev'));
 
 
